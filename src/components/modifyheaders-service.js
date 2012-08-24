@@ -268,7 +268,7 @@ if (!ModifyHeaders.Proxy) {
 					// TODO See if a foreach is better here
 					for (var i=0; i < headers.length; i++) {
 						if (headers[i].enabled) {
-							var headerName = headers[i].name;
+							var headerName = headers[i].name.trim();
 
 							// This is the default for action = Modify
 							var headerValue = headers[i].value;
