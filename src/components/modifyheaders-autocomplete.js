@@ -5,7 +5,7 @@ if (typeof(ModifyHeaders) == "undefined") {
 /**
  * This code is based on the Simple Autocomplete component:
  *  https://developer.mozilla.org/en/How_to_implement_custom_autocomplete_search_component
- *  
+ *
  * Thank you to Mozilla for providing a great example
  */
 if (typeof(ModifyHeaders.Autocomplete) == "undefined") {
@@ -14,10 +14,10 @@ if (typeof(ModifyHeaders.Autocomplete) == "undefined") {
 
 if (typeof(ModifyHeaders.Autocomplete.Result) == "undefined") {
 	Components.utils.import("resource://gre/modules/XPCOMUtils.jsm");
-	
+
 	ModifyHeaders.Autocomplete.Result = function (searchString, searchResult,
 			defaultIndex, errorDescription, results, comments) {
-		
+
 		this._searchString = searchString;
 		this._searchResult = searchResult;
 		this._defaultIndex = defaultIndex;
@@ -25,7 +25,7 @@ if (typeof(ModifyHeaders.Autocomplete.Result) == "undefined") {
 		this._results = results;
 		this._comments = comments;
 	};
-	
+
 	ModifyHeaders.Autocomplete.Result.prototype = {
 		_searchString: "",
 		_searchResult: 0,
@@ -33,12 +33,12 @@ if (typeof(ModifyHeaders.Autocomplete.Result) == "undefined") {
 		_errorDescription: "",
 		_results: [],
 		_comments: [],
-		
+
 		// The original search string
 		get searchString() {
 			return this._searchString;
 		},
-		
+
 		// The result code of this result object, either:
 		//         RESULT_IGNORED   (invalid searchString)
 		//         RESULT_FAILURE   (failure)
@@ -47,7 +47,7 @@ if (typeof(ModifyHeaders.Autocomplete.Result) == "undefined") {
 		get searchResult() {
 			return this._searchResult;
 		},
-		
+
 		// Index of the default item that should be entered if none is selected
 		get defaultIndex() {
 			return this._defaultIndex;
@@ -57,43 +57,43 @@ if (typeof(ModifyHeaders.Autocomplete.Result) == "undefined") {
 		get errorDescription() {
 			return this._errorDescription;
 		},
-		
+
 		// The number of matches
 		get matchCount() {
 			return this._results.length;
 		},
-		
+
 		getLabelAt: function(index) {
 			return this._results[index];
 		},
-		
+
 		// Get the value of the result at the given index
 		getValueAt: function(index) {
 			return this._results[index];
 		},
-		
+
 		// Get the comment of the result at the given index
 		getCommentAt: function(index) {
 			return this._comments[index];
 		},
-		
+
 		// Get the style hint for the result at the given index
 		getStyleAt: function(index) {
 			if (!this._comments[index])
 				return null;  // not a category label, so no special styling
-			
+
 			if (index == 0)
 				return "suggestfirst";  // category label on first line of results
-			
+
 			return "suggesthint";   // category label on any other line of results
 		},
-		
+
 		// Get the image for the result at the given index
 		// The return value is expected to be an URI to the image to display
 		getImageAt : function (index) {
 			return "";
 		},
-		
+
 		// Remove the value at the given index from the autocomplete results.
 		// If removeFromDb is set to true, the value should be removed from
 		// persistent storage as well.
@@ -101,7 +101,7 @@ if (typeof(ModifyHeaders.Autocomplete.Result) == "undefined") {
 			this._results.splice(index, 1);
 			this._comments.splice(index, 1);
 		},
-		
+
 		QueryInterface: function(aIID) {
 			if (!aIID.equals(Components.interfaces.nsIAutoCompleteResult)
 					&& !aIID.equals(Components.interfaces.nsISupports))
@@ -113,18 +113,18 @@ if (typeof(ModifyHeaders.Autocomplete.Result) == "undefined") {
 
 if (typeof(ModifyHeaders.Autocomplete.Search) == "undefined") {
 	Components.utils.import("resource://gre/modules/XPCOMUtils.jsm");
-	
+
 	ModifyHeaders.Autocomplete.Search = function () {};
-	
+
 	ModifyHeaders.Autocomplete.Search.prototype = {
-		
+
 		// XPCOMUtils
 		classDescription: "Modify Headers Auto-complete",
 		classID:          Components.ID("{86e57f10-469a-11e0-9207-0800200c9a66}"),
 		contractID:       "@mozilla.org/autocomplete/search;1?name=modifyheaders-autocomplete",
-		
+
 		QueryInterface: XPCOMUtils.generateQI([Components.interfaces.nsIAutoCompleteSearch]),
-		
+
 		_xpcom_factory: {
 			singleton: null,
 			createInstance: function (aOuter, aIID) {
@@ -135,7 +135,7 @@ if (typeof(ModifyHeaders.Autocomplete.Search) == "undefined") {
 				return this.singleton.QueryInterface(aIID);
 			}
 		},
-		
+
 		/*
 		 * Search for a given string and notify a listener (either synchronously
 		 * or asynchronously) of the result
